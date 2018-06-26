@@ -1,22 +1,22 @@
-# EachParallel
+# EachParallel (alpha)
 
 Adds lightweight parallel iteration to Array using thread pooling.
 
 ```ruby
 using EachParallel
 
-[1,2,3].each_parallel { |item|
+[1,2,3].each_parallel do |item|
   # do stuff
-}
+end
 ```
 
 The provided block will be executed in parallel on a default of 5 threads.
 Set the worker count with the `workers` argument:
 
 ```ruby
-[1,2,3].each_parallel(workers: 2) { |item|
+[1,2,3].each_parallel(workers: 2) do |item|
   # do stuff
-}
+end
 ```
 
 `EachParallel` requires a Ruby implementation that supports refinements.
