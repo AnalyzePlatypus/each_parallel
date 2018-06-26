@@ -1,28 +1,74 @@
 # EachParallel
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/each_parallel`. To experiment with that code, run `bin/console` for an interactive prompt.
+Adds lightweight parallel iteration to Array using thread pooling.
 
-TODO: Delete this and the text above, and describe your gem
+```ruby
+using EachParallel
+
+[1,2,3].each_parallel { |item|
+  # do stuff
+}
+```
+
+The provided block will be executed in parallel on a default of 5 threads.
+Set the worker count with the `workers` argument:
+
+```ruby
+[1,2,3].each_parallel(workers: 2) { |item|
+  # do stuff
+}
+```
+
+`EachParallel` requires a Ruby implementation that supports refinements.
+* ✅ MRI
+* ✅ JRuby
+* ❌ Rubinius ([discussion here](https://github.com/rubinius/rubinius/issues/3715))
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to your application's Gemfile and `bundle install`:
 
 ```ruby
 gem 'each_parallel'
 ```
 
-And then execute:
+Or install it globaly on your machine with:
 
-    $ bundle
+```
+$ gem install each_parallel
+```
 
-Or install it yourself as:
 
-    $ gem install each_parallel
 
 ## Usage
 
-TODO: Write usage instructions here
+
+### Before You Begin
+
+1. `require` the gem.
+2. Activate the refinement with `using EachParallel`.
+3. All `Array`s will now have the `each_parallel` iterator method.
+
+```ruby
+
+require 'each_parallel'
+
+[].methods.include? 'each_parallel'
+# => false
+
+using EachParallel
+
+[].methods.include? 'each_parallel'
+# => true
+```
+
+### Using `each_parallel`
+
+```
+[1,2,3,4].each_parallel do |n|
+  # Do async stuff here
+end
+```
 
 ## Development
 
@@ -30,9 +76,15 @@ After checking out the repo, run `bin/setup` to install dependencies. Then, run 
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
+## Architecture
+
+`EachParallel` patches the `Array` class using a [refinement](https://ruby-doc.org/core-2.5.1/doc/syntax/refinements_rdoc.html).
+For more about refinements, see the [official docs](https://ruby-doc.org/core-2.5.1/doc/syntax/refinements_rdoc.html).
+
+
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/each_parallel.
+Bug reports and pull requests are welcome.
 
 ## License
 
